@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>禁煙記録</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    input, button { margin: 10px; padding: 5px; }
+  </style>
+</head>
+<body>
+  <h1>🚭 禁煙記録</h1>
+  <label>禁煙開始日: <input type="date" id="startDate"></label>
+  <button onclick="saveDate()">記録開始</button>
+  <h2 id="counter">禁煙継続中：--</h2>
+
+  <script>
+    function saveDate() {
+      const date = document.getElementById("startDate").value;
+      localStorage.setItem("quitDate", date);
+    }
+
+    function updateCounter() {
+      const saved = localStorage.getItem("quitDate");
+      if (!saved) return;
+      const start = new Date(saved);
+      const now = new Date();
+      const diff = now - start;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      document.getElementById("counter").textContent =
+        `禁煙継続中：${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
+    }
+
+    setInterval(updateCounter, 1000);
+    updateCounter();
+  </script>
+</body>
+</html>
